@@ -1,0 +1,24 @@
+% !TeX root = ../main.tex
+
+\section{Code}
+
+\subsection{Vanilla box}
+\fbox{\begin{minipage}{\linewidth}
+    \begin{addmargin}[0em]{0em}
+        \textbf{Input}: dataset $x_n\in\mathbb{R}^D$\\
+        $t_n\in\{-1,+1\}$, for $n=1:N$\\
+        Initialize $w_0$\\
+        $k\leftarrow 0$\\
+        \textbf{repeat}
+        \begin{addmargin}[1em]{0em}
+            $k\leftarrow k+1$\\
+            $n\leftarrow k$ mode $N$\\
+            \textbf{if} $\hat{t}_n\neq t_n$ \textbf{then}
+            \begin{addmargin}[1em]{0em}
+                $w_{k+1}\leftarrow w_k+\phi(x_n)t_n$
+            \end{addmargin}
+            \textbf{end if}
+        \end{addmargin}
+        \textbf{until} convergence
+    \end{addmargin}    
+\end{minipage}}

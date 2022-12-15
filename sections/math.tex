@@ -1,0 +1,105 @@
+% !TeX root = ../main.tex
+
+\section{Math Mode}
+
+\subsection{Some symbols}
+$
+\sim\text{ = \textbackslash sim}
+\\ 
+\approx\text{ = \textbackslash appro}
+\\
+\propto\text{ = \textbackslash propto}
+\\
+\mathbb{E} \hspace{1em} \mathbb{P} \hspace{1em} \mathbb{R}\text{ = \textbackslash mathbb\{\}}
+\\
+\mathcal{N}\text{ = \textbackslash mathcal\{\}}
+\\
+\subseteq\text{ = \textbackslash subseteq}
+\\
+\langle S,P^{\pi},\mu\rangle\text{ = \textbackslash langle\textbackslash rangle}
+\\ 
+\rightarrow\text{ = \textbackslash rightarrow}
+\\ 
+\Rightarrow\text{ = \textbackslash Rightarrow}
+$
+
+\begin{center}
+    \begin{tabular}{c c|c c|c c|c c}
+        \hline
+        $\sim$ & \textbackslash sim
+        & $\approx$ & \textbackslash approx 
+        & $\mathbb{E}$ & \textbackslash mathbb\{\} 
+        & $\propto$ & \textbackslash propto \\ \hline
+
+        $\mathcal{N}$ & \textbackslash matchal 
+        & $\subseteq$ & \textbackslash subseteq 
+        & $\Rightarrow$ & \textbackslash Rightarrow
+        & $\rightarrow$ & \textbackslash rightarrow \\ \hline
+
+        $\nless$ & \textbackslash nless 
+        & $\ngtr$ & \textbackslash ngtr 
+        & $\nleq$ & \textbackslash nleq 
+        & $\ngeq$ & \textbackslash ngeq \\ \hline
+    \end{tabular}    
+\end{center}
+
+
+\subsection{Spacing and text}
+$$i_q=\arg\min_{n\in\{1,\cdots,N\}}||x_q-x_n||_2\hspace{1em}Prediction:\,\,\hat{t}_q=t_{i_q}$$
+
+$$i_q=\arg\min_{n\in\{1,\cdots,N\}}||x_q-x_n||_2\hspace{1em}\text{Prediction: }\hat{t}_q=t_{i_q}$$
+
+$$i_q=\arg\min_{n\in\{1,\cdots,N\}}||x_q-x_n||_2\qquad\text{Prediction: }\hat{t}_q=t_{i_q}$$
+
+\subsection{Matrix}
+A pmatrix:
+$$
+\Phi=(\phi(x_1),\phi(x_2),\cdots,\phi(x_N))^T=
+\begin{pmatrix}
+    1 & \phi_1(x_1) & \phi_2(x_1) & \cdots & \phi_{M-1}(x_1) \\
+    & & \vdots & & \\
+    & & \phi_(x_N) & &
+\end{pmatrix}
+$$
+
+A bmatrix:
+\begin{center}
+    $
+    K=
+    \begin{bmatrix}
+        k(x_1,x_1) & \cdots & k(x_1,x_n) \\
+        \vdots & \ddots & \vdots \\
+        k(x_n,x_n) & \cdots & k(x_n,x_n)
+    \end{bmatrix}
+    $
+\end{center}
+
+\subsection{Underbrace}
+$$L(w)=\frac{1}{2}(\underset{Nx1}{\underbrace{t}}-\underset{NxM}{\underbrace{\Phi}}\,\underset{Mx1}{\underbrace{w}})^T(t-\Phi w)$$
+
+\subsection{Systems}
+$$
+\begin{cases}
+    \frac{\partial L(w)}{\partial w}=-\Phi^T(t-\Phi w)\\
+    \vspace{0em}\\
+    \frac{\partial^2L(w)}{\partial w \partial w^T}=\Phi^T\Phi
+\end{cases}
+$$
+
+$$
+\pi^*(a|s)=
+    \begin{cases}
+        1\text{  if $a=\arg \max_{a\in A}Q^*(s,a)$}\\
+        0\text{  otherwise}
+    \end{cases}
+$$
+
+\subsection{Gaussian and LARGE font}
+\begin{LARGE}
+$$
+    \mathcal{N}(\mu,\sigma^2)=\frac
+    {1}{\sigma\sqrt{2\pi}}e^{
+        -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)
+    }
+$$
+\end{LARGE}
