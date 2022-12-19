@@ -652,9 +652,15 @@ The steps:
 \end{itemize}
 
 \subsubsection{Newton-Cotes}
-We have first to define:
+Interpolatory quadrature rule:
+\begin{LARGE}
+    $$
+    \tilde{I}(f)=\sum_{i=1}^J\alpha_if(x_i)
+    $$
+\end{LARGE}
+With $\alpha_i$ quadrature weights, $x_i$ quadrature nodes. We have first to define:
 \begin{itemize}
-    \item \textbf{Order of accuracy}, associated only to the composite rule, "rate of convergence for the quadrature rule to zero- of the error" (it's the power of $H$ in the composite error)
+    \item \textbf{Order of accuracy}, associated only to the composite rule, "rate of convergence for the quadrature rule to zero- of the error" (it's the power of $H$ in the composite error): \textbf{it's the convergence rate, that we can compute with piecewise by plotting $H$ against the error, $H$, $H^2$, till $n$ of $C^n$ in loglog and take the line parallel to the error}
     \item \textbf{Degree of exactness}, associated both to composite and simple, maximum degree of the polynomials which are exactly integrated by your quadrature rule. Suppose:
     $$
     I(f)=\int_a^bf(x)dx\qquad\tilde{I}(f)
@@ -667,7 +673,7 @@ We have first to define:
     $$
     de=\text{[degree of derivative]}-1
     $$
-    If we know the explicit expression of the error ($E$) we try different degrees in order to make it zero
+    If we know the explicit expression of the error ($E$) we try different degrees in order to make it zero: $de$ is the order of derivative-1
 \end{itemize}
 We have
 \begin{itemize}
@@ -689,9 +695,11 @@ We have
         $$
     \end{LARGE}
     Where $c$ stands for composite, the simple midpoint quadrature rule version:
-    $$
-    \tilde{I}_{MP}(f)=(b-a)f\left(\frac{a+b}{2}\right)
-    $$
+    \begin{LARGE}
+        $$
+        \tilde{I}_{MP}(f)=(b-a)f\left(\frac{a+b}{2}\right)
+        $$
+    \end{LARGE}
     \textbf{Errors}:
     \begin{itemize}
         \item Simple midpoint quadrature rule error
@@ -749,7 +757,7 @@ We have
         \frac{x^2}{2}\Big|_a^b=?=(b-a)\frac{a+b}{2}
         $$
         OK, make the computations
-        \item $p_1$ degree 2
+        \item $p_2$ degree 2
         $$I(x^2)=?=\tilde{I}(x^2)$$
         $$
         \frac{x^3}{3}\Big|_a^b=?=(b-a)\left[\frac{a+b}{2}^2\right]
@@ -778,9 +786,11 @@ We have
         $$
     \end{LARGE}
     The first expression associated to intervals, the second to nodes. The simple trapezoidal quadrature rule version:
-    $$
-    \tilde{I}_T(f)=\frac{(b-a)}{2}\left[f(a)+f(b)\right]
-    $$
+    \begin{LARGE}
+        $$
+        \tilde{I}_T(f)=\frac{(b-a)}{2}\left[f(a)+f(b)\right]
+        $$
+    \end{LARGE}
     \textbf{Errors}:
     \begin{itemize}
         \item Simple trapezoidal quadrature rule
@@ -805,7 +815,7 @@ We have
         $$
         \item Composite trapezoidal quadrature rule
         $$
-        \tilde{E}_T=I(f)-\tilde{I}_T^c(f)=
+        \tilde{E}_T^c=I(f)-\tilde{I}_T^c(f)=
         -\frac{(b-a)}{12}H^2f''(\rho)
         $$
         $$
@@ -839,41 +849,256 @@ We have
         $$
     \end{LARGE}
     The simple Simpson quadrature rule version:
+    \begin{LARGE}
+        $$
+        \tilde{I}_S(f)=\frac{(b-a)}{6}\left[
+            f(a)+
+            4f\left(\frac{a+b}{2}\right)+f(b)
+        \right]
+        $$
+    \end{LARGE}
+    \textbf{Errors}:
+    \begin{itemize}
+        \item Simple Simpson quadrature rule
+        $$
+        \tilde{E}_S=I(f)-\tilde{I}_S(f)=
+        -\frac{(b-a)^5}{2880}f^{(4)}(\sigma)
+        $$
+        $$
+        f\in C^4([a,b])\qquad\sigma\in[a,b]
+        $$
+        \item Composite Simpson quadrature rule
+        $$
+        \tilde{E}_S^c=I(f)-\tilde{I}_S^c(f)=
+        -\frac{(b-a)}{2880}H^4f^{(4)}(\eta)
+        $$
+        $$
+        f\in C^4([a,b])\qquad\eta\in[a,b]
+        $$
+    \end{itemize}
+    \textbf{Order of accuracy}: $oa_{S}=4$\\
+    \textbf{Degree of exactness}: $de_{S}=3$
+    \begin{itemize}
+        \item $p_0$ degree 0
+        $$I(1)=?=\tilde{I}(1)$$
+        $$
+        (b-a)=?=
+        \frac{(b-a)}{6}\left[
+            f(a)+
+            4f\left(\frac{a+b}{2}\right)+f(b)
+        \right]=
+        \frac{(b-a)}{6}\left[
+            1+
+            4+1
+        \right]
+        =(b-a)
+        $$
+        As $f$ is 1 evaluated everywhere.\\
+        OK
+        \item $p_1$ degree 1
+        $$I(x)=?=\tilde{I}(x)$$
+        $$
+        \frac{x^2}{2}\Big|_a^b=?=
+        \frac{(b-a)}{6}\left[
+            f(a)+
+            4f\left(\frac{a+b}{2}\right)+f(b)
+        \right]
+        $$
+        OK, make the computations
+        \item $p_2$ degree 2\\
+        OK
+        \item $p_3$ degree 3\\
+        KO, we stop here, so $de_{S}=3$
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Gaussian quadrature rules}
+Till now we have seen Newton-Cotes formulas, while now we will see Gaussian formulas:
+\begin{itemize}
+    \item In the Newton-Cotes when we fix the partition into subintervals for the integration we immediately know where are the quadrature nodes: e.g. when we fix the degree of the polynomial to 1, trapezoidal, the quadrature nodes are the endpoints, if degree to 2, Simpson, quadrature nodes are the endpoints and middle point
+    \item In Gaussian we do not know a priori the position of the quadrature nodes: the quadrature nodes are neither the endpoints nor the middle point of the interval, but special points
+\end{itemize}
+For a certain number $J$ of quadrature nodes, the Gaussian quadrature rules maximize the degree of exactness. If we consider $J=2$:
+$$
+\sum_{j=1}^2\alpha_jf(x_j)
+$$
+We must solve a system of 4 unknowns, the two quadrature nodes $x_j$ and the two quadrature weights $\alpha_j$. This system of equations to find the unknowns result in ensuring that the $de=0$ (ensured by first equation), $de=1$ (ensured by second equation), ..., $de=3$ (ensured by fourth equation):
+$$
+\begin{cases}
+    de=0\qquad I(1)=b-a=\tilde{I}_G(1)=\alpha_1+\alpha_2\\
+    de=1\qquad I(x)=\frac{b^2}{2}-\frac{a^2}{2}=\tilde{I}_G(x)=\alpha_1x_1+\alpha_2x_2\\
+    de=2\qquad I(x^2)=\frac{b^3}{3}-\frac{a^3}{3}=\tilde{I}_G(x^2)=\alpha_1x_1^2+\alpha_2x_2^2\\
+    de=3\qquad I(x^3)=\frac{b^4}{4}-\frac{a^4}{4}=\tilde{I}_G(x^3)=\alpha_1x_1^3+\alpha_2x_2^3
+\end{cases}
+$$
+Making some computations, we will find that $x_1$ and $x_2$ are symmetric w.r.t. middle point of the interval:
+\begin{LARGE}
     $$
-    \tilde{I}_S(f)=\frac{(b-a)}{6}\left[
-        f(a)+
-        4f\left(\frac{a+b}{2}\right)+f(b)
+    \tilde{I}_G(f)=\frac{b-a}{2}\left[
+        f(x_1^G)+
+        f(x_2^G)
     \right]
     $$
+\end{LARGE}
+Which is similar to the trapezoidal rule, but with different quadrature nodes. The resulting trapezoid:
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{images/logo.pdf}
+\end{center}
+The error:
+$$
+I(f)-\tilde{I}_G(f)=\frac{1}{4320}(b-a)^5f^{(4)}(\rho)
+$$
+The Gaussian rule with two nodes ($J=2$) provides same degree of exactness and results of Simpson rule with one less node (Simpson used $J=3$ nodes).
 
+If we introduce intervals (composite Gaussian case), we will get discontinuous approximate function.
+
+\begin{LARGE}
+    $$
+    \tilde{I}_G^c(f)=\frac{H}{2}
+    \sum_{i=1}^H
+    \left[
+        f(x_1^{G,i})+
+        f(x_2^{G,i})
+    \right]
+    $$
+\end{LARGE}
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{images/logo.pdf}
+\end{center}
+The error:
+$$
+I(f)-\tilde{I}_G(f)=\frac{(b-a)}{4320}H^4f^{(4)}(\nu)
+$$
+And in conclusion:
+$$
+oa=4\qquad de=3
+$$
+In general for degree $J$ we have $2J$ unknowns and $de=2J-1$
+
+\subsection{Numerical Differentiation}
+The goal is approximate derivative of a function \textbf{at a certain single value}:
+$$
+f'(\overline{x})\qquad f\in C^1\left([a,b]\right)\qquad\overline{x}\in [a,b]
+$$
+Starting from the definition of derivative:
+$$
+f'(\overline{x})=\lim_{h\rightarrow 0}
+\frac{
+    f(\overline{x}+h)-f(\overline{x})
+}{h}
+$$
+\subsubsection{Forward and backward finite difference}
+\begin{itemize}
+    \item \textbf{Forward finite difference}
+    $$
+    f'(\overline{x})\cong \delta_+f(\overline{x})=
+    \frac{
+        f(\overline{x}+h)-f(\overline{x})
+    }{h}
+    $$
+    For $h$ closer to 0, this difference will be sharper. If we build the characteristic polynomial:
+    $$
+    \Pi_1f\qquad(\overline{x}, f(\overline{x}))\qquad(\overline{x}+h,f(\overline{x}+h))
+    $$
+    And derive it, we get exactly the forward finite difference:
+    $$
+    \Pi_1f(x)=f(\overline{x})
+    \underlabel{
+        \phi_{\overline{x}}(x)
+    }{$\frac{x-\overline{x}-h}{\overline{x}-\overline{x}-h}$}
+    +
+    f(\overline{x}+h)
+    \underlabel{
+        \phi_{\overline{x}+h}(x)
+    }{$\frac{x-\overline{x}}{\overline{x}+h-\overline{x}}$}=
+    f(\overline{x})\frac{x-\overline{x}-h}{h}+f(\overline{x}+h)\frac{x-\overline{x}}{h}
+    $$
+    $$
+    (\Pi_1f(x))'=-f(\overline{x})\frac{1}{h}+f(\overline{x}-h)\frac{1}{h}=
+    \frac{f(\overline{x}+h)-f(\overline{x})}{h}=\delta_+f(\overline{x})
+    $$
+    $$
+    \left(\Pi_1,f\right)'=\delta_+f(\overline{x})
+    $$
+    To compute the error we use the Taylor expansion:
+    $$
+    f(\overline{x}+h)=f(\overline{x})+hf'(\overline{x})+\frac{h^2}{2}f''(\alpha)\qquad\alpha\in [\overline{x},\overline{x}+h]\qquad f\in C^2([a,b])
+    $$
+    Divide everything by $h$:
+    $$
+    f'(\overline{x})+
+    \underlabel{
+        \frac{f(\overline{x})}{h}-\frac{f(\overline{x}+h)}{h}
+    }{$-\delta_+f(\overline{x})$}
+    =
+    -\frac{h}{2}f'(\alpha)
+    $$
+    So:
+    $$
+    -\frac{h}{2}f''(\alpha)=f'(\overline{x})-\delta_+f(\overline{x})
+    $$
+    This scheme is a first order scheme ($h$ has degree 1).
+    \item \textbf{Backward finite difference}
+    $$
+    f'(\overline{x})\cong \delta_-f(\overline{x})=
+    \frac{
+        f(\overline{x})-f(\overline{x}-h)
+    }{h}
+    $$
+    In terms of accuracy, this scheme is equivalent fo the forward finite difference, still a first order scheme. Using the Taylor expansion to compute the error:
+    $$
+    f(\overline{x}-h)=f(\overline{x})-hf'(\overline{x})+\frac{h^2}{2}f''(\beta)\qquad\beta\in [\overline{x}-h,\overline{x}]\qquad f\in C^2([a,b])
+    $$
+    Divide everything by $h$, make computations, we will get:
+    $$
+    \frac{h}{2}f''(\beta)=f'(\overline{x})-\delta_-f(\overline{x})
+    $$
+    The same error with an inverted sign.
 \end{itemize}
-\pagebreak
-\begin{figure}[!ht]
-    \begin{minipage}{\linewidth}
-        \centering
-        \makebox[\textwidth][c]{\includegraphics[width=0.8\textwidth]{images/piecewise.png}}%
-        \caption{Modified Newton graph}
-        %\label{BarsNielsenCrop}
-    \end{minipage}
-\end{figure}
 
+\subsubsection{Centered finite difference}
+How to generate a scheme with higher accuracy, e.g. of second order? We can "combine the point before and the point after":
+$$
+f'(\overline{x})=\lim_{h\rightarrow 0}\frac{
+    f(\overline{x}+h)-f(\overline{x}-h)
+}{2h}
+$$
+And:
+$$
+f'(\overline{x})\simeq \delta f(\overline{x})=\frac{
+    f(\overline{x}+h)-f(\overline{x}-h)
+}{2h}
+$$
+\textbf{Centered finite difference}, for the error we considerate two Taylor expansions and we demand $f\in C^3([a,b])$:
+$$
+\begin{cases}
+    f(\overline{x}+h)=f(\overline{x})+
+    hf'(\overline{x})+
+    \frac{h^2}{2}f''(\overline{x})+
+    \frac{h^3}{6}f^{(3)}(\gamma)
+    \qquad \gamma\in[\overline{x},\overline{x}+h]\\
+    \\
+    f(\overline{x}-h)=f(\overline{x})-
+    hf'(\overline{x})+
+    \frac{h^2}{2}f''(\overline{x})-
+    \frac{h^3}{6}f^{(3)}(\rho)
+    \qquad \rho\in[\overline{x}-h,\overline{x}]\\
+\end{cases}
+$$
+Subtract the two expansions, we will get:
+$$
+f(\overline{x}+h)-f(\overline{x}-h)=2hf''(\overline{x})+\frac{h^3}{6}\left[
+    f^{(3)}(\gamma)+f^{(3)}(\rho)
+\right]
+$$
+Divide by $2h$ and making the computations we get:
+$$
+f'(\overline{x})-\delta f(\overline{x})=
+-\frac{h^2}{12}\left[
+    f^{(3)}(\gamma)+f^{(3)}(\rho)
+\right]
+$$
+This last scheme is the best one, but we might have to use the forward or backward scheme when $\overline{x}$ is one of the endpoints:
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{images/intro_interpolation.png}
-    \includegraphics[width=0.45\textwidth]{images/intro_leastsquare.png}
-\end{center}
-
-\begin{center}
-    \begin{lstlisting}[escapeinside=`']
-        while(true)
-            `$x^{(k)}=(a^{(k)}+b^{(k)})/2$'
-            if(`$f(x^{(k-1)})=0$') break;
-            if `$f(a^{(k-1)})f(x^{(k-1)})<0$'
-                `$a^{(k)}=a^{(k-1)},b^{(k)}=x^{(k-1)}$';
-            else
-                `$a^{(k)}=x^{(k-1)},b^{(k)}=b^{(k-1)}$';
-            end
-        \end{lstlisting}
-\end{center}
-\begin{center}
-    \includegraphics[width=0.5\textwidth]{images/intro_interpolation.png}
+    \includegraphics[width=0.5\textwidth]{images/numdif_endpoints.png}
 \end{center}
