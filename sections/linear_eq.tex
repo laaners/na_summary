@@ -324,7 +324,7 @@ $$
 $$
 Let's see if $LU=A$, for example:
 $$
-A=A^{(1)}\begin{bmatrix}
+A=A^{(1)}=\begin{bmatrix}
     1 & 2 & 1\\
     2 & 0 & -1\\
     -1 & 1 & 5
@@ -406,9 +406,10 @@ When we want to solve $Ax=b$ we have multiple ways:
     \item GEM on $\left[A|b\right]$ paying $\mathbf{(>\frac{2}{3}n^3)+2n^2\sim O(n^3)}$
     \item Using $x=A^{-1}b$ paying an higher cost than the previous two methods. The inverse can be found applying GEM till:
     $$\left[A|I_n\right]\Rightarrow \left[I_n|A^{-1}\right]$$
-    Consider methods 1 and 2, in which case one is the less costly than the other? When we have to solve multiple systems of the kind $Ax=c_{i\rightarrow q}$ with right side different every time: in this case the first method is better as we pay the cost of $LU$ factorization only once (so we pay $\frac{2}{3}n^3+q(2n^2)$) while with the second one we pay the whole cost every time (paying $q\left(\frac{2}{3}n^3+2n^2\right)$).\\
-    \textbf{This is the case of method 3}, we are solving $Ax=c_{i\rightarrow q}$   multiple times and in total we pay $\mathbf{\frac{2}{3}n^3+n(2n^2)=\frac{8}{3}n^3}$
 \end{enumerate}
+Consider methods 1 and 2, in which case one is the less costly than the other? When we have to solve multiple systems of the kind $Ax=c_{i\rightarrow q}$ with right side different every time: in this case the first method is better as we pay the cost of $LU$ factorization only once (so we pay $\frac{2}{3}n^3+q(2n^2)$) while with the second one we pay the whole cost every time (paying $q\left(\frac{2}{3}n^3+2n^2\right)$).\\
+\textbf{This is the case of method 3}, we are solving $Ax=c_{i\rightarrow q}$   multiple times and in total we pay
+$$\mathbf{\frac{2}{3}n^3+n(2n^2)=\frac{8}{3}n^3}$$
 
 \subsubsection{Necessary and sufficient criteria for GEM}
 $$
@@ -546,7 +547,7 @@ With $\left[l_{21}\,\,l_{31}\,\,l_{32}\right]=[2\,\,3\,\,\frac{3}{0}]$. The last
     \begin{itemize}
         \item If matrix $A$ is spd, we consider the $A=LU$, how does the two factors inherit the symmetric aspect of the original matrix? As
         $$A=LU=A^T=(LU)^T=U^TL^T$$
-        One is the transpose of the other, so we compute only one factor. In matlab Cholesky, $R=chol(A)$, and the computational cost from $n^3$ will be reduced to $\frac{n^3}{3}$.
+        One is the transpose of the other, so we compute only one factor. In matlab Cholesky, $R=chol(A)$, and the computational cost from $\frac{2n^3}{3}$ will be reduced to $\frac{n^3}{3}$.
         $$
         A=R^TR
         $$
@@ -588,7 +589,7 @@ With $\left[l_{21}\,\,l_{31}\,\,l_{32}\right]=[2\,\,3\,\,\frac{3}{0}]$. The last
             H^Tx=y
         \end{cases}
         $$
-        \item Consider a 3-diagonal matrix, which has diagonal, first upper and first lower diagonals the only non-null overall, while all the others zero. The entries of those 3 diagonals are either 0,-1,+1
+        \item Consider a 3-diagonal matrix, which has diagonal, first upper and first lower diagonals the only non-null overall, while all the others zero.
         $$
         A=\begin{bmatrix}
             \ddots & \ddots & 0 & 0 & 0\\
@@ -616,7 +617,7 @@ With $\left[l_{21}\,\,l_{31}\,\,l_{32}\right]=[2\,\,3\,\,\frac{3}{0}]$. The last
             \end{bmatrix}
         }{$U$ upper bi-diagonal}
         $$
-        We to find the $LU$ factorization, consider
+        To find the $LU$ factorization, consider
         $$
         A=\begin{bmatrix}
             a_1 & c_1 & 0\\
@@ -911,7 +912,7 @@ $\delta b$ and $\delta A$ are perturbation on the data, matlab is computing the 
 $$
 \tilde{x}=x+\delta x
 $$
-Starting from $\delta A=0$, we want to relate the two perturbations:
+We want to relate the two perturbations:
 $$\frac{||\delta A||}{||A||}\qquad\frac{||\delta b||}{||b||}$$
 We must firstly introduce some lemmas.
 
@@ -921,7 +922,7 @@ We must firstly introduce some lemmas.
     $$
     \lambda_{\min}(B)\leq\frac{x^TBx}{x^Tx}\leq\lambda_{\max}(B)\qquad\forall\,\,x\neq 0\in\mathbb{R}^n
     $$
-    There $\lambda$'s are the eigenvalues.
+    Where $\lambda$'s are the eigenvalues.
     \item Let $A$ be a nonsingular matrix. Then $A^TA$ is spd
 \end{enumerate}
 
@@ -1012,6 +1013,7 @@ A norm of a matrix has 3 possible definitions
     \item \textbf{Infinity norm}, first compress horizontally, then compress vertically, like dual of before
     $$||A||_\infty=\max_i\sum_{j=1}^n|a_{ij}|$$
     $$K(A)=||A||_\infty\cdot||A^{-1}||_\infty$$
+    If the matrix is symmetric the infinity norm coincides with norm one
     \item \textbf{2-norm or Spectral norm}, spectrum of a matrix is the collection of the eigenvalues
     $$
     ||A||_2=\sqrt{\lambda_{\max}(A^TA)}
@@ -1038,7 +1040,7 @@ A norm of a matrix has 3 possible definitions
         $$
     \end{itemize}
 \end{itemize}
-In matlab $cond(A)$ for 2-norm, $condest(A_sparse)$ for 1-norm
+In matlab $cond(A)$ for 2-norm, $condest(A_{sparse})$ for 1-norm
 
 Now we can rewrite:
 $$
@@ -1047,7 +1049,7 @@ $$
 We get the residual
 
 \subsubsection{Perturbation on the matrix A}
-What if $\delta A\neq 0$? If $||\delta A||||A^{-1}||<1$, we can:
+What if $\delta A\neq 0$? If $||\delta A||\cdot||A^{-1}||<1$, we can:
 $$
 \frac{||\delta x||}{||x||}
 \leq

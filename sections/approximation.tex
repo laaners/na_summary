@@ -168,7 +168,7 @@
         \begin{itemize}
             \item x vector collecting interpolation nodes, $x_i$
             \item y is $y_i$
-            \item n is the degree of the polynomial, but is redundant as there is a strict relation between number of data and degree of polynomial (for $n$ data, the polynomial will have defree of $n-1$), in least squares it will have a meaning
+            \item n is the degree of the polynomial, but is redundant as there is a strict relation between number of data and degree of polynomial (for $n$ data, the polynomial will have degree of $n-1$), in least squares it will have a meaning
         \end{itemize}
         It returns the coefficients of our interpolating polynomial
         $$
@@ -302,7 +302,7 @@
     $$
     H=\max_jh_j
     $$
-    The idea is consider each subinterval and replace the function $f$ with conjuction of endpoints (polynomial with low degree, so we avoid oscillations). By increasing the number of nodes, the approximation improves
+    The idea is consider each subinterval and replace the function $f$ with conjunction of endpoints (polynomial with low degree, so we avoid oscillations). By increasing the number of nodes, the approximation improves
     \begin{center}
         \includegraphics[width=0.7\textwidth]{images/piecewise.png}
     \end{center}
@@ -316,7 +316,7 @@
     $$
     \Pi_i^Hf(x_k)=f(x_k)\qquad k=0,\cdots,n
     $$
-    Express it as conjuction of endpoints that includes those 3 requirements:
+    Express it as conjunction of endpoints that includes those 3 requirements:
     \begin{LARGE}
         $$
         \Pi_1^Hf(x)=f(x_j)+\frac{
@@ -409,7 +409,7 @@
     \end{enumerate}
     In matlab \textbf{d = spline(x,y,z)}, build and directly evaluate. For each interval we have a polynomial of degree 3: $S_3$ (so $a_i$ for $i=4$).We have 4 unknowns for each interval, let \#intervals = $n$, so $4n$ unknowns. The procedure:
     \begin{enumerate}[1)]
-        \item $S_3((x_i)=f(x_i)\qquad i=0,\cdots,n$
+        \item $S_3(x_i)=f(x_i)\qquad i=0,\cdots,n$
         \item We demand $S_3$ continuous in the nodes, $S_3\in C^0\left(\left[
             x_0,x_n
         \right]\right)$
@@ -438,7 +438,7 @@
     In total we have $(n+1)+3(n-1)=4n-2$ conditions, but we need two more:
     \begin{itemize}
         \item $S_3''(x_0)=S_3''(x_n)=0$, natural cubic interpolating spline
-        \item Not-a-knot-condition: $S_3''$ continuous at $x_1,x_{n-1}$
+        \item Not-a-knot-condition: $S_3'''$ continuous at $x_1,x_{n-1}$
         $$
         \left[
             S_3'''(x_1)
@@ -472,7 +472,7 @@
     $$
 
 \subsection{Least Squared Approximation}
-    Data $\Brackets{(x_i,y_i)}^n_{i}$, $x_i$ distinct, we find a polynomial $\tilde{f}\in\mathbb{P}_m$ of degree $m\geq 1,m<<n$ and $\tilde{f}(x_i)\neq y_i$ such that:
+    \textbf{Cloud of data} $\Brackets{(x_i,y_i)}^n_{i}$, $x_i$ distinct, we find a polynomial $\tilde{f}\in\mathbb{P}_m$ of degree $m\geq 1,m<<n$ and $\tilde{f}(x_i)\neq y_i$ such that:
     \begin{LARGE}
         $$
         \underlabel{
@@ -485,7 +485,7 @@
         \qquad\forall\,\,p_m\in\mathbb{P}_m
         $$
     \end{LARGE}
-    We want to minimize the right term.
+    We want to minimize the right term. \textbf{To approximate the set of data we can resort to least squares approximation of a suitable degree according to the the location only (does not depend on the number) of the pairs in the Cartesian plane}.
     \subsubsection{Degree n}
     $m=n$ Lagrange interpolant, $\tilde{f}==\Pi_n$
 
@@ -606,7 +606,7 @@
         \sum y_i\\
         \sum x_iy_i\\
         \vdots\\
-        x_i^my_i
+        \sum x_i^my_i
     \end{bmatrix}
     $$
 
@@ -660,8 +660,8 @@ Interpolatory quadrature rule:
 \end{LARGE}
 With $\alpha_i$ quadrature weights, $x_i$ quadrature nodes. We have first to define:
 \begin{itemize}
-    \item \textbf{Order of accuracy}, associated only to the composite rule, "rate of convergence for the quadrature rule to zero- of the error" (it's the power of $H$ in the composite error): \textbf{it's the convergence rate, that we can compute with piecewise by plotting $H$ against the error, $H$, $H^2$, till $n$ of $C^n$ in loglog and take the line parallel to the error}
-    \item \textbf{Degree of exactness}, associated both to composite and simple, maximum degree of the polynomials which are exactly integrated by your quadrature rule. Suppose:
+    \item \textbf{Order of accuracy}, associated only to the composite rule, "rate of convergence for the quadrature rule to zero- of the error" (it's the power of $H$ in the composite error): \textbf{it's the convergence rate, that we can compute with piecewise by plotting $H$ against the error, $H$, $H^2$, till $n$ of $C^n$ in loglog and take the line parallel to the error. Higher is the order of accuracy, faster the method converges}.
+    \item \textbf{Degree of exactness}, associated both to composite and simple, maximum degree of the polynomials which are exactly integrated by your quadrature rule: \textbf{a method exactly integrates a polynomial with degree lower than the degree of exactness of the method}. Suppose:
     $$
     I(f)=\int_a^bf(x)dx\qquad\tilde{I}(f)
     $$
@@ -673,9 +673,9 @@ With $\alpha_i$ quadrature weights, $x_i$ quadrature nodes. We have first to def
     $$
     de=\text{[degree of derivative]}-1
     $$
-    If we know the explicit expression of the error ($E$) we try different degrees in order to make it zero: $de$ is the order of derivative-1
+    If we know the explicit expression of the error ($E$) we try different degrees in order to make it zero: $de$ is the order of derivative-1. Also a formula with $n+1$ nodes has at most degree of exactness $2n+1$
 \end{itemize}
-We have
+We have number of subintervals $M$ with width of $H=\frac{b-a}{M}$
 \begin{itemize}
     \item $m=0$, \textbf{midpoint quadrature rule}, which means for each subinterval $\tilde{f}$ is a constant function
     \begin{center}
@@ -700,6 +700,7 @@ We have
         \tilde{I}_{MP}(f)=(b-a)f\left(\frac{a+b}{2}\right)
         $$
     \end{LARGE}
+    \textbf{The number of subintervals is equal to the number of total nodes}\\
     \textbf{Errors}:
     \begin{itemize}
         \item Simple midpoint quadrature rule error
@@ -733,7 +734,7 @@ We have
         =\frac{H^3}{24}f''(\gamma)\sum_{k=1}^M1=
         =\frac{H^3}{24}f''(\gamma)M=
         $$
-        With $H=\frac{b-a}{M}\rightarrow M=\frac{b-a}{M}$, so:
+        With $H=\frac{b-a}{M}\rightarrow M=\frac{b-a}{H}$, so:
         $$
         \tilde{E}_{MP}^c=I(f)-\tilde{I}_{MP}^c(f)=
         \frac{(b-a)}{24}H^2f''(\gamma)
@@ -791,19 +792,20 @@ We have
         \tilde{I}_T(f)=\frac{(b-a)}{2}\left[f(a)+f(b)\right]
         $$
     \end{LARGE}
+    \textbf{The number of subintervals is equal to the number of total nodes minus 1}\\
     \textbf{Errors}:
     \begin{itemize}
         \item Simple trapezoidal quadrature rule
         $$
-        I(f)-\tilde{I}_T(f)=\int_a^b\left[d(x)-\Pi_1(f)(x)\right]dx
+        I(f)-\tilde{I}_T(f)=\int_a^b\left[f(x)-\Pi_1(f)(x)\right]dx
         $$
         The term inside the integral is:
         $$
-        E_1=\frac{f''(\eta(x))}{2}(x-a)(a-b)
+        E_1=\frac{f''(\eta(x))}{2}(x-a)(x-b)
         $$
         From
         $$
-        E_nf(x)=\frac{f^{(n+1)}(\alpha(x))}{(n-1)!}\prod_{k=0}^n(x-x_k)
+        E_nf(x)=\frac{f^{(n+1)}(\alpha(x))}{(n+1)!}\prod_{k=0}^n(x-x_k)
         $$
         Making the computations...
         $$
@@ -857,6 +859,7 @@ We have
         \right]
         $$
     \end{LARGE}
+    \textbf{The number of subintervals is equal to (\#nodes - 1)/2}\\
     \textbf{Errors}:
     \begin{itemize}
         \item Simple Simpson quadrature rule
@@ -870,7 +873,7 @@ We have
         \item Composite Simpson quadrature rule
         $$
         \tilde{E}_S^c=I(f)-\tilde{I}_S^c(f)=
-        -\frac{(b-a)}{2880}H^4f^{(4)}(\eta)
+        -\frac{(b-a)}{180}H^4f^{(4)}(\eta)
         $$
         $$
         f\in C^4([a,b])\qquad\eta\in[a,b]
@@ -956,7 +959,7 @@ If we introduce intervals (composite Gaussian case), we will get discontinuous a
 \begin{LARGE}
     $$
     \tilde{I}_G^c(f)=\frac{H}{2}
-    \sum_{i=1}^H
+    \sum_{i=1}^M
     \left[
         f(x_1^{G,i})+
         f(x_2^{G,i})

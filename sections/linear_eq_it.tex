@@ -27,18 +27,15 @@
     $$
     x=Bx+g
     $$
+    With $B$ matrix that depends on $A$ and $g$ vector that depends on $A$ and $B$
+    $$
+    B=B(A)\qquad g=g(A,b)
+    $$
     We follow the recursive definition to create a new iteration:
     $$
     x^{(k+1)}=Bx^{(k)}+g\qquad B\in\mathbb{R}^{n\times n}\qquad g\in\mathbb{R}^n
     $$
-    Where we have dependency of:
-    $$
-    B=B(A)\qquad g=g(A,b)
-    $$
-    Consistency means that the equality has to hold w.r.t. the exact solution.
-
-    Notice that $g$ depdens on $A$ as:
-    \vspace{1em}
+    Consistency means that the equality has to hold w.r.t. the exact solution. Notice that $g$ depends on $A$ as:
 
     $
     x=Bx+g\\
@@ -99,7 +96,7 @@
     $$
     Attention, we \textbf{assumed that the method is consistent, make sure that the method is consistent}
 
-    This inequality represents a \textbf{necessary and sufficient condition for convergence}: let use consider the iterative scheme given by $x^{(k+1)}=Bx^{(k)}+g$ and let us assume that such a scheme is \textbf{consistent}, then the scheme turns out to be convergent independently of the initial guess, $\forall\,\,x^{(0)}\in\mathbb{R}^n$ \textbf{if and only if} $\rho(B)<1$
+    This inequality represents a \textbf{necessary and sufficient condition for convergence}: let us consider the iterative scheme given by $x^{(k+1)}=Bx^{(k)}+g$ and let us assume that such a scheme is \textbf{consistent}, then the scheme turns out to be convergent independently of the initial guess, $\forall\,\,x^{(0)}\in\mathbb{R}^n$ \textbf{if and only if} $\rho(B)<1$
 
     A scheme to be convergent, we must check consistency and spectral radius. If one of these does not hold, the method is not convergent.
 
@@ -356,9 +353,7 @@
             \end{enumerate}
         \end{itemize}
     \end{itemize}
-    We said that Gauss-Seidel does not necessarily outperforms Jacobi. A particular configuration
-
-    Let $A\in\mathbb{R}^{n\times n}$ nonsingular, tridiagonal, with all $a_{ii}\neq 0$: both Jacobi and Gauss-Seidel are convergent or are divergent (they cannot be "discordant") and if they both are convergent
+    We said that Gauss-Seidel does not necessarily outperforms Jacobi. Let $A\in\mathbb{R}^{n\times n}$ nonsingular, tridiagonal, with all $a_{ii}\neq 0$: both Jacobi and Gauss-Seidel are convergent or are divergent (they cannot be "discordant") and if they both are convergent
     $$
     \rho(B_{GS})=\left[\rho(B_J)\right]^2
     $$
@@ -382,7 +377,7 @@
     $$
 
     \subsubsection{Optimal acceleration parameter for stationary schemes}
-    Let $A$ and $P$ be spd matrices. Then, the stationary Richardson scheme is convergent $ \forall\,\,x^{(0)}\in\mathbb{R}^{n\times n}$ if and only if (necessary and sufficient)
+    Let $A$ and $P$ be \textbf{spd matrices}. Then, the stationary Richardson scheme is convergent $ \forall\,\,x^{(0)}\in\mathbb{R}^{n\times n}$ if and only if (necessary and sufficient)
     $$
     0<\alpha<\frac{2}{\lambda_{max}(P^{-1}A)}
     $$
@@ -502,7 +497,7 @@
         \end{itemize}
     \end{itemize}
 
-\subsection{Dynamic Richardson Schemes}
+\subsection{Dynamic Richardson Scheme: preconditioned gradient methods}
     If $A$ and $P$ are spd matrices, the dynamic Richardson scheme is convergent \underline{if} (sufficient)
     $$
     \alpha_{k,opt}=\frac{
@@ -539,36 +534,36 @@
     \subsubsection{The algorithm}
     The algorithm has 4 steps
     \begin{center}
-        \begin{lstlisting}[escapeinside=`']
-            // set intial guess, we can also define associated initial residual
-            `$x^{(\phi)}\in\mathbb{R}^n\qquad r^{(\phi)}=b-Ax^{(\phi)}$'
-            for k=0,1,...
-                if `$P=I$'
-                    // got to step 2, 3 steps algorithm in this case
-                else
-                    `1) $Pz^{(k)}=r^{(k)}$'
-                `2) $\alpha_{k,opt}=\frac{
-                    \left[z^{(k)}\right]^Tr^{(k)}
-                }{
-                    \left[z^{(k)}\right]^TAz^{(k)}
-                }$'
-                `3) $x^{(k+1)}=x^{(k)}+\alpha_{opt,k}z^{(k)}$'
-                `4) $r^{(k+1)}=r^{(k)}-\alpha_{opt,k}Az^{(k)}$'
+        \begin{lstlisting}[language=Matlab, escapeinside=`']
+% set intial guess, we can also define associated initial residual
+`$x^{(\phi)}\in\mathbb{R}^n\qquad r^{(\phi)}=b-Ax^{(\phi)}$'
+for k=0,1,...
+    if `$P=I$'
+        % got to step 2, 3 steps algorithm in this case
+    else
+        `1) $Pz^{(k)}=r^{(k)}$'
+    `2) $\alpha_{k,opt}=\frac{
+        \left[z^{(k)}\right]^Tr^{(k)}
+    }{
+        \left[z^{(k)}\right]^TAz^{(k)}
+    }$'
+    `3) $x^{(k+1)}=x^{(k)}+\alpha_{opt,k}z^{(k)}$'
+    `4) $r^{(k+1)}=r^{(k)}-\alpha_{opt,k}Az^{(k)}$'
         \end{lstlisting}
     \end{center}
     If stationary, step 2) outside the for cycle
     \begin{center}
-        \begin{lstlisting}[escapeinside=`']
-            // set intial guess, we can also define associated initial residual
-            `$x^{(\phi)}\in\mathbb{R}^n\qquad r^{(\phi)}=b-Ax^{(\phi)}$'
-            `$\alpha_{opt}=...$'
-            for k=0,1,...
-                if `$P=I$'
-                    // got to step 3, 2 steps algorithm in this case
-                else
-                    `1) $Pz^{(k)}=r^{(k)}$'
-                `3) $x^{(k+1)}=x^{(k)}+\alpha_{opt}z^{(k)}$'
-                `4) $r^{(k+1)}=r^{(k)}-\alpha_{opt}Az^{(k)}$'
+        \begin{lstlisting}[language=Matlab, escapeinside=`']
+% set intial guess, we can also define associated initial residual
+`$x^{(\phi)}\in\mathbb{R}^n\qquad r^{(\phi)}=b-Ax^{(\phi)}$'
+`$\alpha_{opt}=...$'
+for k=0,1,...
+    if `$P=I$'
+        % got to step 3, 2 steps algorithm in this case
+    else
+        `1) $Pz^{(k)}=r^{(k)}$'
+    `3) $x^{(k+1)}=x^{(k)}+\alpha_{opt}z^{(k)}$'
+    `4) $r^{(k+1)}=r^{(k)}-\alpha_{opt}Az^{(k)}$'
         \end{lstlisting}
     \end{center}
     \subsubsection{Stationary and dynamic: which one is the best}
@@ -596,7 +591,7 @@
     $$
     Note that the quadratic $Q(x)$ is a paraboloid and we are finding its minimum. How to proceed:
     $$
-    x^{(k+1)}=x{(k)}+\gamma_kd^{(k)}
+    x^{(k+1)}=x^{(k)}+\gamma_kd^{(k)}
     $$
     with $d^{(k)}$ the direction, \textbf{the steepest descent} and $\gamma_k$ the step size. We choose the steepest direction, so the gradient:
     $$
@@ -667,8 +662,8 @@
     }
     $$
 
-\subsection{Conjugate gradient method}
-    Gradient method can work with Hilbert system: conjugate gradient method, 5 steps algorithm that selects a new direction $p^{(k)}$ instead of $d^{(k)}$:
+\subsection{Dynamic Richardson Scheme: conjugate gradient method}
+    Gradient method can work with Hilbert system (matrix properly preconditioned): conjugate gradient method, 5 steps algorithm that selects a new direction $p^{(k)}$ instead of $d^{(k)}$:
     $$
     \left[p^{(j)}\right]^TAp^{(k+1)}=0
     \qquad j = 0,\cdots,k
@@ -676,14 +671,14 @@
     New direction $A$-orthogonal (or $A$ conjugate) w.r.t. the previous direction.
     \begin{center}
         \begin{lstlisting}[escapeinside=`']
-            // set intial guess, we can also define associated initial residual
-            `$x^{(0)}\in\mathbb{R}^n\qquad r^{(0)}=b-Ax^{(0)}$'
-            for k=0,1,...
-                `1) $\alpha_k=...$'
-                `2) $x^{(k+1)}=x^{(k)}+\alpha_{k}p^{(k)}$'
-                `3) $r^{(k+1)}=...$'
-                `4) $\beta_k=...$' // another constant for computing new direction
-                `5) $p^{(k+1)}=r^{(k+1)}-\beta_kp^{(k)}$'
+// set intial guess, we can also define associated initial residual
+`$x^{(0)}\in\mathbb{R}^n\qquad r^{(0)}=b-Ax^{(0)}$'
+for k=0,1,...
+    `1) $\alpha_k=...$'
+    `2) $x^{(k+1)}=x^{(k)}+\alpha_{k}p^{(k)}$'
+    `3) $r^{(k+1)}=r^{(k)}-\alpha_{k}Ap^{(k)}$'
+    `4) $\beta_k=...$' // another constant for computing new direction
+    `5) $p^{(k+1)}=r^{(k+1)}-\beta_kp^{(k)}$'
         \end{lstlisting}
     \end{center}
     This method wants $A$ spd, also the errors:
@@ -803,7 +798,7 @@
     kmin\in\mathbb{N}\text{ s.t. }
     ||e^{(kmin)}||\leq C
     \underlabel{
-        ||\delta x^{(k)}||\leq TOL
+        ||\delta^{(k)}||\leq TOL
     }{Prove this}
     $$
     We start from the below and using triangular inequality:
@@ -842,9 +837,9 @@
     kmin = \frac{
         \log\left[
             \frac{
-                \epsilon(1-||B||_2)
+                \epsilon\cdot(1-||B||_2)
             }{
-                \log||x^1-x^0||
+                ||x^1-x^0||
             }
         \right]
     }{

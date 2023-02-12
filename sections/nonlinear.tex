@@ -63,7 +63,7 @@ $$
 $$
 \alpha\in I^{(1)}\subset I^{(0)}$$
 $$
-|I^{(0)}|=\frac{|I^{(0)}|}{2}$$
+|I^{(1)}|=\frac{|I^{(0)}|}{2}$$
 $$
 \alpha\in I^{(2)}\subset I^{(1)}$$
 $$
@@ -140,12 +140,14 @@ k\geq\log_2\left(
 $$
 The right member will represent the $Nmax$
 $$
-Nmax=\left\lceil\log_2\left(
-    \frac{b-a}{TOL}
-\right)\right\rceil=
+Nmax=\underlabel{
+    \left\lceil\log_2\left(
+        \frac{b-a}{TOL}
+    \right)-1\right\rceil
+}{$\log_2(\cdots)-1$}=
 \left\lceil\log_{10}\left(
     \frac{b-a}{TOL}
-\right)/\log_{10}2\right\rceil
+\right)/\log_{10}2-1\right\rceil
 $$
 
 \subsubsection{Pros and Cons}
@@ -164,11 +166,11 @@ Cons:
 \subsection{Newton method}
 $Nmax$ has to hold for all continuous functions in that interval $[a,b]$, so it has to be large.
 
-The Newton we are not only exploiting the sign of f, but also the values. It is the most powerful method, and demands that:
-$$f\in C^1([0,0])$$
+In Newton we are not only exploiting the sign of $f$, but also the values. It is the most powerful method, and demands that:
+$$f\in C^1([a,b])$$
 Set of functions continuous in their first derivative
 
-Replace $f$ with the tangent line at point of oure initial guess $x^{(0)}$, then take the intersection of the tangent with the $x$ axis, that will be our $x^{(1)}$. Then repeat:
+Replace $f$ with the tangent line at point of our initial guess $x^{(0)}$, then take the intersection of the tangent with the $x$ axis, that will be our $x^{(1)}$. Then repeat:
 
 \begin{figure}[!ht]
     \begin{minipage}{\linewidth}
@@ -178,20 +180,21 @@ Replace $f$ with the tangent line at point of oure initial guess $x^{(0)}$, then
         %\label{BarsNielsenCrop}
     \end{minipage}
 \end{figure}
+
 tg to $f$ at $(x^{(k)},f(x^{(k)}))\\
 y(x)=f(x^{(k)})+f'(x^{(k)})(x-x^{(k)})\\
 x^{(k+1)}\text{ s.t. }y(x^{(k+1)})=0\\
-f(x^{(k)})+f'(x^{(k)})(x^{(k+1)}-x^{(k)})
+f(x^{(k)})+f'(x^{(k)})(x^{(k+1)}-x^{(k)})=0
 $\\
-From this equality we want to derive $x^{(k+1)}$:\\
+From this equality we find $x^{(k+1)}$:\\
 $$x^{(k+1)}=x^{(k)}-\frac{f(x^{(k)})}{f'(x^{(k)})}\qquad k\geq 0$$
 Assuming $f'(x^{(k)})\neq 0$\\
 It can be proved that this algorithm is just a truncation of the Taylor expansion
 \subsubsection{Taylor expansion}
-We must first decide the center and where to evaluate the expansion. In oure case the center is $x^{(k)}$, we evaluate at $x^{(k+1)}$
+We must first decide the center and where to evaluate the expansion. In our case the center is $x^{(k)}$, we evaluate at $x^{(k+1)}$
 $$f(x)=f(x^{(k)})+f'(x^{(k)})(x-x^{(k)})+O\left((x-x^{(k)})^2\right)x^{(k+1)}$$
 So if we evaluate at $x^{(k+1)}$, we simply replace $x$. We neglect the big $O$ term and if $k$ is sufficiently large, we can approximate to $\alpha$.
-$$0=f(\alpha)\simeq f(x^{(k+1)})\cong f(x^{(k)})+f'(x^{(k)})(^{(k+1)}-x^{(k)})$$
+$$0=f(\alpha)\simeq f(x^{(k+1)})\cong f(x^{(k)})+f'(x^{(k)})(x^{(k+1)}-x^{(k)})$$
 Which is exactly the Newton method
 
 \subsubsection{Comparison with bisection}
@@ -241,11 +244,11 @@ Adding a third hypothesis
 \begin{enumerate}[H3)]
     \item $f\in C^2([a,b])$, we can say that the following limit holds:
     $$\lim_{k\rightarrow\infty}\frac{
-        x^{(k+1)}\alpha
+        x^{(k+1)}-\alpha
     }{[x^{(k)}-\alpha]^2}=
     \underlabel{\frac{f''(\alpha)}{2f'(\alpha)}}{C}$$
-    In general \textbf{convergence order} equal to P if $\exists\,\,c$ independent from $k$, such that
-    $$\frac{|x^{k+1}-\alpha|}{|x^k-\alpha|^P}\leq C,\,\,\forall\,\,k\geq k_0$$
+    In general \textbf{convergence order} equal to P if $\exists\,\,C$ independent from $k$, such that
+    $$\frac{|x^{(k+1)}-\alpha|}{|x^{(k)}-\alpha|^P}\leq C,\,\,\forall\,\,k\geq k_0$$
     If $P=1$, linear convergence. In our case $P=2$, quadratic convergence. In general, with a higher convergence order the error reduces:
     
     $
@@ -256,7 +259,7 @@ Adding a third hypothesis
 
     The constant $C$ does not have any requirement, but in some sense it is slowing the convergence (for $C=10,P=3,\text{the error }\simeq 10^{-6}*10=10^{-5}$), but for $P=1$ reduction of the error not guaranteed if $C=1$, so:
     $$P=1\rightarrow C<1$$
-    In the Newton case:
+    In the Newton case, if H1, H2 and H3 hold, the convergence of Newton is \textbf{quadratic}:
     $$C=\frac{f''(\alpha)}{2f'(\alpha)}$$
 \end{enumerate}
 \subsubsection{Modified Newton scheme}
@@ -415,18 +418,8 @@ So this estimator is reliable when:
 $$|f'(\alpha)| \simeq 1$$
 
 \subsection{Fixed Point Method}
-If we apply continuously for example the cos:
-
-$
-x^{(0)}=1\\
-x^{(1)}=\cos(x^{(0)})\\
-x^{(2)}=\cos(x^{(1)})\\
-\vdots\\
-x^{(k+1)}=\cos(x^{(k)})
-$
-
-Which means $\alpha=\cos(\alpha)$, with $\alpha$ known as \textbf{fixed point} of the function cos. In general:
-$$\Phi:[a,b]\subset\mathbb{R}\rightarrow \mathbb{R}$$
+A fixed point $\alpha$ for a function $\phi$ is:
+$$\phi:[a,b]\subset\mathbb{R}\rightarrow \mathbb{R}$$
 $$\alpha\in\mathbb{R}\text{ fixed point $\phi(\alpha)=\alpha$}$$
 Geometrically we are looking for the intersection of:
 $$
@@ -496,7 +489,7 @@ With initial guess $x^{(0)}$. Considering the previous methods bisection and New
     \end{minipage}
 \end{figure}
 
-All even at left side, all even at right side.\\
+All even at left side, all odd at right side.\\
 Are we converging to $\alpha$? Yes, the iterations are moving closer and closer to $\alpha$, which is an \textbf{attractor}.
 
 \begin{figure}[!ht]
@@ -520,7 +513,7 @@ $$x^{(k+1)}=\phi(x^{(k)})$$
 \begin{itemize}
     \item \textbf{Global result}
     \begin{enumerate}
-        \item Let $\phi\in C^0([a,b])$ and s.t. $\phi\in[a,b]\,\,\forall\,\,x\in[a,b]$\\
+        \item Let $\phi\in C^0([a,b])$ and s.t. $\phi(x)\in[a,b]\,\,\forall\,\,x\in[a,b]$\\
         \begin{figure}[!ht]
             \begin{minipage}{\linewidth}
                 \centering
@@ -532,7 +525,7 @@ $$x^{(k+1)}=\phi(x^{(k)})$$
         
         We are demading that our function $\phi$ has to take values inside that rectangle, must be limited in a certain portion of the plane.\\
         Under this hypothesis, we can prove that exists at least a fixed point $\alpha\in\,\,[a,b]$ for function $\phi$ (the example has two), so \textbf{not uniqueness of fixed point}
-        \item If we in addition we assume that there exists and integer $L<1$ s.t.
+        \item If in addition we assume that there exists an integer $L<1$ s.t.
         $$\left|\phi(x_1)-\phi(x_2)\right|\leq L|x_1-x_2|\,\,\forall\,\,x_1,x_2\in[a,b]$$
         (Lipschitz continuity, weaker demand w.r.t. derivability, weaker than $C^1$) then $\exists!\,\,\alpha\in[a,b]$ for $\phi$ and
         $$\brackets{x^{(k)}}\rightarrow\alpha\,\,\forall\,\,x^{(0)}\in\mathbb{R}$$
@@ -542,7 +535,7 @@ $$x^{(k+1)}=\phi(x^{(k)})$$
         $$\frac{|x^{(k+1)}-\alpha|}{|x^{(k)}-\alpha|}\leq L < 1$$
         Which means that the fixed method is convergent with order 1 (power below is 1, but actually $p\geq 1$, so \textbf{order at least 1})
     \end{enumerate}
-    But this practical is not practical
+    But this is not practical
     \item \textbf{Local result or Ostrowski's theorem}: let $\alpha$ be a fixed point for $\phi$ in $[a,b]$ (so we are already assuming the existence and uniqueness of $\alpha$), with $\phi\in C^1(I_\alpha)$ and $I_\alpha$ neighborhood of $\alpha$ (different from before, we here stronger assumptions than global which only required $C^0$ and Lipschitz continuity, but $C^1$ locally).\\
     Under these hypotheses, if $|\phi'(\alpha)|<1$ then $\exists\,\,\delta>0$ s.t. $\forall\,\,x^{(0)}$ with $|x^{(0)}-\alpha|<\delta$:
     $$\brackets{x^{(k)}}\rightarrow\alpha \text{ and }\lim_{k\rightarrow\infty}\frac{x^{(k+1)}-\alpha}{x^{(k)}-\alpha}=\phi'(\alpha)$$
@@ -554,12 +547,14 @@ $$x^{(k+1)}=\phi(x^{(k)})$$
         |\phi'(\alpha)| = 1 \text{ we cannot say anything}\\
     \end{cases}
     $$
+    \textbf{Also for for smaller values, corresponding $\phi$s will be more efficient}
 \end{itemize}
 
 \subsubsection{Examples for the Local Result}
 \begin{enumerate}
     \item $\phi(x)=\cos(x)$ and $\phi'(x)=-\sin(x)$
     $$|\phi'(\alpha)|=|\sin(\alpha)|<1\qquad \alpha\neq 0$$
+    Converges
     \item $\phi(x)=x^2-1$, we want to know if fixed point method is convergent or not: first we derive the fixed point of $\phi$:
     $$x=\phi(x)\rightarrow x^2-x-1=0$$
     $$\alpha_{1,2}=\frac{1\pm\sqrt{5}}{2}$$
@@ -572,7 +567,7 @@ $$x^{(k+1)}=\phi(x^{(k)})$$
     \begin{enumerate}
         \item With Newton
         $$\phi_1(x)=\phi_N(x)=x-\frac{\log(x)-\gamma}{\frac{1}{x}}=x(1-\log(x)+\gamma)$$
-        \item 
+        \item Simply use $\phi(x)=f(x)+x$
         $$\phi_2(x)=\log(x)-\gamma+x$$
         \item 
         $$x\log(x)-\gamma x=0\rightarrow\phi_3(x)=\frac{x\log(x)}{\gamma}$$
@@ -583,14 +578,14 @@ $$x^{(k+1)}=\phi(x^{(k)})$$
 \subsubsection{Fixed point method with any order of convergence}
 Proposition: let us assume that the Ostrowski's theorem hypothesis are verified (\textbf{so we are in local setting}). If $\phi\in C^P(I_\alpha)$ and $\phi^{(i)}(\alpha)=0\,\,i=1,\cdots,p-1$ (derivatives till $p-1$) and $\phi^{(p)}(\alpha)\neq 0$ then $\exists\,\,\delta>0$ s.t. $\forall\,\,x^{(0)}$ with $\left|x^{(0)}-\alpha\right|<\delta$
 $$
-\brackets{x^{(k)}}\rightarrow\alpha\text{ and }\lim_{k\rightarrow\infty}\frac{x^{(k+1)}-\alpha}{\left[x^{(k)}-\alpha\right]^p}=\underlabel{\frac{\phi^{(p)}}{p!}}{$C$}
+\brackets{x^{(k)}}\rightarrow\alpha\text{ and }\lim_{k\rightarrow\infty}\frac{x^{(k+1)}-\alpha}{\left[x^{(k)}-\alpha\right]^p}=\underlabel{\frac{\phi^{(p)}(\alpha)}{p!}}{$C$}
 $$
 We can guarantee the convergence of our fixed point method and compute the convergence order.
 
 \subsubsection{Stopping criteria}
 Reminder
 $$
-\left|e^{(kmin)}\right|=\left|x^{(kmin)}-\alpha\right|\leq CS=\left|x^{(kmin+1)}-x^{(kmin)}\right|\leq TOL\,\,(e.g.=10^{-9})
+\left|e^{(kmin)}\right|=\left|x^{(kmin)}-\alpha\right|\leq CS=C\left|x^{(kmin+1)}-x^{(kmin)}\right|\leq TOL\,\,(e.g.=10^{-9})
 $$
 Reminder: $\exists\,\,\beta_k$ between $\alpha$ and $x^{(k)}$ (min value theorem, appliable since $\phi$ is $C^1$)
 $$
@@ -631,7 +626,7 @@ Larger is $m$, closer that quantity is to 1, which means we are losing in terms 
 
 A stopping criterion for fixed point: $m$ not too high.
 
-\subsection{Consistency}
+\subsubsection{Consistency}
 $$
 x^{(k+1)}=\phi(x^{(k)})
 $$
